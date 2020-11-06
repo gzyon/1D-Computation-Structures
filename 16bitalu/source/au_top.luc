@@ -104,7 +104,8 @@ module au_top (
       io_dip[2][5:0] != 6b110111 &
       io_dip[2][5:0] != 6b110011 &
       io_dip[2][5:0] != 6b000010 &
-      io_dip[2][5:0] != 6b000011) {
+      io_dip[2][5:0] != 6b000011 &
+      io_dip[2][5:0] != 6b000111) {
       seg.values = {4h6, 4h1, 4h8, 4h9};
     }
         
@@ -132,7 +133,7 @@ module au_top (
           io_led[1] = alu16b.out[15:8];
           io_led[2][5:0] = 6b0;
           if (counter.q == 1) {
-            states.d = states.AND;
+            states.d = states.SUB;
           }
         }
       else {
