@@ -1,0 +1,157 @@
+module shiftPlayer (
+    input clk,  // clock
+    input rst,  // reset
+    input left_button,
+    input right_button,
+    output io_led[3][8],
+    //output pos,
+    output outled
+  ) {
+
+  dff ledcolor[6][24](#INIT({h000000, h000000, hFF0000, h000000, h000000, h000000}), .clk(clk));
+  
+  ws2812b_writer led_strip(#PIXEL_COUNT(6), .clk(clk), .rst(rst)); //set for 3 pixels
+  .clk(clk) {
+  
+    fsm movement = {COL1, COL2, COL3, COL4, COL5, COL6};
+    
+  }
+  
+  always {
+    
+    led_strip.update=1; //sample write 
+    led_strip.color = ledcolor.q[led_strip.pixel];
+    outled = led_strip.led;
+    io_led = 3x{{8h00}};
+    
+    case (movement.q) {
+    
+      movement.COL1:
+        if (left_button) {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL1;
+        }
+        
+        else if (right_button) {
+          ledcolor.d = {h000000, hFF0000, h000000, h000000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL2;
+        }
+        
+        else {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL1;
+        }
+        
+      movement.COL2:
+        if (left_button) {
+          ledcolor.d = {hFF0000, h000000, h000000, h000000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL1;
+        }
+          
+        else if (right_button) {
+          ledcolor.d = {h000000, h000000, hFF0000, h000000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL3;
+        }
+          
+        else {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL2;
+        }
+        
+      movement.COL3:
+        if (left_button) {
+          ledcolor.d = {h000000, hFF0000, h000000, h000000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL2;
+        }
+          
+        else if (right_button) {
+          ledcolor.d = {h000000, h000000, h000000, hFF0000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL4;
+        }
+          
+        else {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL3;
+        }
+        
+      movement.COL4:
+        if (left_button) {
+          ledcolor.d = {h000000, h000000, hFF0000, h000000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL3;
+        }
+          
+        else if (right_button) {
+          ledcolor.d = {h000000, h000000, h000000, h000000, hFF0000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL5;
+        }
+          
+        else {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL4;
+        }
+        
+      movement.COL5:
+        if (left_button) {
+          ledcolor.d = {h000000, h000000, h000000, hFF0000, h000000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL4;
+        }
+          
+        else if (right_button) {
+          ledcolor.d = {h000000, h000000, h000000, h000000, h000000, hFF0000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL6;
+        }
+          
+        else {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL5;
+        }
+        
+      movement.COL6:
+        if (left_button) {
+          ledcolor.d = {h000000, h000000, h000000, h000000, hFF0000, h000000};
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL5;
+        }
+        
+        else if (right_button) {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL6;
+        }
+        
+        else {
+          led_strip.color = ledcolor.q[led_strip.pixel];
+          outled=led_strip.led;
+          movement.d = movement.COL6;
+        }
+          
+
+    // led_strip.color=LEDCOLOR[led_strip.pixel]; 
+  }
+    
+}

@@ -1,0 +1,155 @@
+module initialise_col_LED (
+    input clk,
+    
+    // inputs from regfile
+    input col0[16],
+    input col1[16],
+    input col2[16],
+    input col3[16],
+    input col4[16],
+    input col5[16],
+    
+    //output to LED strip
+    output col0_led[7][24],
+    output col1_led[7][24],
+    output col2_led[7][24],
+    output col3_led[7][24],
+    output col4_led[7][24],
+    output col5_led[7][24],
+    
+    // debugging
+    output done
+  ) {
+  
+  .clk(clk) {
+    dff count;
+    dff count1;
+    dff count2;
+    dff count3;
+    dff count4;
+    dff count5;
+    dff col0_out[7][24];
+    dff col1_out[7][24];
+    dff col2_out[7][24];
+    dff col3_out[7][24];
+    dff col4_out[7][24];
+    dff col5_out[7][24];
+    
+    fsm binary_to_hex = {IDLE, BINARYTOHEX1, BINARYTOHEX2, BINARYTOHEX3, BINARYTOHEX4, BINARYTOHEX5, BINARYTOHEX6};
+  }
+  
+  
+  always {
+    count.d = 0;
+    count1.d = 0;
+    count2.d = 0;
+    count3.d = 0;
+    count4.d = 0;
+    count5.d = 0;
+    
+    col0_led = col0_out.q;
+    col1_led = col1_out.q;
+    col2_led = col2_out.q;
+    col3_led = col3_out.q;
+    col4_led = col4_out.q;
+    col5_led = col5_out.q;
+    
+    col0_out.d = 7x{{h000000}};
+    col1_out.d = 7x{{h000000}};
+    col2_out.d = 7x{{h000000}};
+    col3_out.d = 7x{{h000000}};
+    col4_out.d = 7x{{h000000}};
+    col5_out.d = 7x{{h000000}};
+    
+    done = 0;
+    
+    case (binary_to_hex.q) {
+      
+      binary_to_hex.BINARYTOHEX1:
+        if (col0[count.q]) {
+          col0_out.d[count.q] = hFF0000;
+          count.d = count.q + 1;
+        }
+        else {
+          col0_out.d[count.q] = h000000;
+          count.d = count.q + 1;
+        }
+        
+        if (count.q == 7) {
+          binary_to_hex.d = binary_to_hex.BINARYTOHEX2;
+        }
+      
+      binary_to_hex.BINARYTOHEX2:
+        if (col1[count1.q]) {
+          col1_out.d[count1.q] = hFF0000;
+          count1.d = count1.q + 1;
+        }
+        else {
+          col1_out.d[count1.q] = h000000;
+          count1.d = count1.q + 1;
+        }
+        
+        if (count1.q == 7) {
+          binary_to_hex.d = binary_to_hex.BINARYTOHEX3;
+        }
+      
+      binary_to_hex.BINARYTOHEX3:
+        if (col2[count2.q]) {
+          col2_out.d[count2.q] = hFF0000;
+          count2.d = count2.q + 1;
+        }
+        else {
+          col2_out.d[count2.q] = h000000;
+          count2.d = count2.q + 1;
+        }
+        
+        if (count2.q == 7) {
+          binary_to_hex.d = binary_to_hex.BINARYTOHEX4;
+        }
+      
+      binary_to_hex.BINARYTOHEX4:
+        if (col3[count3.q]) {
+          col3_out.d[count3.q] = hFF0000;
+          count3.d = count3.q + 1;
+        }
+        else {
+          col3_out.d[count3.q] = h000000;
+          count3.d = count3.q + 1;
+        }
+        
+        if (count3.q == 7) {
+          binary_to_hex.d = binary_to_hex.BINARYTOHEX5;
+        }
+      
+      binary_to_hex.BINARYTOHEX5:
+        if (col4[count4.q]) {
+          col4_out.d[count4.q] = hFF0000;
+          count4.d = count4.q + 1;
+        }
+        else {
+          col4_out.d[count4.q] = h000000;
+          count4.d = count4.q + 1;
+        }
+        
+        if (count4.q == 7) {
+          binary_to_hex.d = binary_to_hex.BINARYTOHEX6;
+        }
+      
+      binary_to_hex.BINARYTOHEX6:
+        if (col5[count5.q]) {
+          col5_out.d[count5.q] = hFF0000;
+          count5.d = count5.q + 1;
+        }
+        else {
+          col5_out.d[count5.q] = h000000;
+          count5.d = count5.q + 1;
+        }
+        
+        if (count5.q == 7) {
+          binary_to_hex.d = binary_to_hex.IDLE;
+        }
+      
+      binary_to_hex.IDLE:
+        done = 1;
+    }
+}

@@ -1,0 +1,510 @@
+module game_CU (
+    input clk,
+    input rst,
+    input decrease_timer,
+    input regfile_b[16], // // direct reading of regfile data from read_address_b
+    
+    input left_button,
+    input right_button,
+    input rst_button,
+    input start_button,
+    
+    output we[1],
+    output wdsel[1],
+    output asel[4],
+    output bsel[4],
+    output alufn[6],
+    output ra[4],
+    output rb[4],
+    output rc[4]
+  ) {
+  
+  .clk(clk) {
+    
+    //simple_dual_ram ram(#SIZE(3), #DEPTH(8));
+    
+    fsm game_fsm = {
+      // states (and their control signals) defined in this order
+      START,
+      SET_SCORE,
+      INITIALISE_PLAYER_POSITION,
+      INITIALISE_MAP_COL_0,
+      INITIALISE_MAP_COL_1,
+      INITIALISE_MAP_COL_2,
+      INITIALISE_MAP_COL_3,
+      INITIALISE_MAP_COL_4,
+      INITIALISE_MAP_COL_5,
+      
+      IDLE,
+      
+      CHECK_LEFT_BOUNDARY,
+      BRANCH_LEFT,
+      SHIFT_PLAYER_LEFT,
+      
+      CHECK_RIGHT_BOUNDARY,
+      BRANCH_RIGHT,
+      SHIFT_PLAYER_RIGHT,
+      
+      SHIFT_COL_0,
+      SHIFT_COL_1,
+      SHIFT_COL_2,
+      SHIFT_COL_3,
+      SHIFT_COL_4,
+      SHIFT_COL_5,
+      SHIFT_COLS,
+      GET_PLAYER_POS,
+      CHECK_PLAYER_POS,
+      CHECK_REMAINING_MAP_LENGTH,
+      BRANCH_MAPLENGTH,
+      INCREASE_SCORE,
+      CHECK_SCORE,
+      BRANCH_SCORE,
+      GAME_OVER
+    };
+    //counter slowclock(#SIZE(1), #DIV(26), .rst(rst));
+    //edge_detector time_detector(#RISE(1), #FALL(0));
+  }
+  
+  always {
+    
+    // standard setting unless otherwise overwritten by each case
+    we = 0;
+    wdsel = 0;
+    asel = 00;
+    bsel = 00;
+    alufn = 000000;
+    ra = 0000;
+    rb = 0000;
+    rc = 1111;
+    
+    //time_detector.in = slowclock.value;
+    
+    case(game_fsm.q) {
+      
+      game_fsm.START:
+        
+        if (start_button) {
+          game_fsm.d = game_fsm.SET_SCORE;
+        }
+      
+      game_fsm.SET_SCORE:
+        we = 1;
+        wdsel = 1;
+        asel = 0010;
+        //bsel = --;
+        alufn = 011010; // 'A'
+        //ra = ----;
+        //rb = ----;
+        rc = 0111; 	// 0x6: Score
+        
+        game_fsm.d = game_fsm.INITIALISE_PLAYER_POSITION;
+      
+      
+      game_fsm.INITIALISE_PLAYER_POSITION:
+        we = 1;
+        wdsel = 0;
+        asel = 0010;
+        bsel = 0100;  // 0x0020: ...100000
+        alufn = 000000; 	// ADD
+        //ra = 1000;
+        //rb = ----;
+        rc = 1000; 	// 0x7: Player position
+        
+        game_fsm.d = game_fsm.INITIALISE_MAP_COL_0;
+      
+      
+      game_fsm.INITIALISE_MAP_COL_0:
+        we = 1;
+        wdsel = 0;
+        asel = 0100;
+        // bsel = ----;
+        alufn = 011010; 	// 'A'
+        //ra = 0000;
+        // rb = 0100;
+        rc = 0000; 	// 0x0: Column 0
+        
+        game_fsm.d = game_fsm.INITIALISE_MAP_COL_1;
+      
+      
+      game_fsm.INITIALISE_MAP_COL_1:
+        we = 1;
+        wdsel = 0;
+        asel = 0101;
+        // bsel = ----;
+        alufn = 011010; 	// 'A'
+        //ra = 0001;
+        // rb = 0101;
+        rc = 0001; 	// 0x1: Column 1
+        
+        game_fsm.d = game_fsm.INITIALISE_MAP_COL_2;
+      
+      
+      game_fsm.INITIALISE_MAP_COL_2:
+        we = 1;
+        wdsel = 0;
+        asel = 0110;
+        // bsel = ----;
+        alufn = 011010; 	// 'A'
+        //ra = 0010;
+        // rb = 0110;
+        rc = 0010; 	// 0x2: Column 2
+        
+        game_fsm.d = game_fsm.INITIALISE_MAP_COL_3;
+      
+      
+      game_fsm.INITIALISE_MAP_COL_3:
+        we = 1;
+        wdsel = 0;
+        asel = 0111;
+        // bsel = ----;
+        alufn = 011010; 	// 'A'
+        //ra = 0011;
+        // rb = 0111;
+        rc = 0011; 	// 0x3: Column 3
+        
+        game_fsm.d = game_fsm.INITIALISE_MAP_COL_4;
+      
+      
+      game_fsm.INITIALISE_MAP_COL_4:
+        we = 1;
+        wdsel = 0;
+        asel = 1000;
+        // bsel = ----;
+        alufn = 011010; 	// 'A'
+        //ra = 0100;
+        // rb = 1000;
+        rc = 0100; 	// 0x4: Column 4
+        
+        game_fsm.d = game_fsm.INITIALISE_MAP_COL_5;
+      
+      
+      game_fsm.INITIALISE_MAP_COL_5:
+        we = 1;
+        wdsel = 0;
+        asel = 1001;
+        // bsel = ----;
+        alufn = 011010; 	// 'A'
+        //ra = 0101;
+        // rb = 1001;
+        rc = 0101; 	// 0x5: Column 5
+        
+        game_fsm.d = game_fsm.IDLE;
+      
+      
+      game_fsm.IDLE:
+        we = 0;
+        wdsel = 0;
+        //asel = --;
+        //bsel = --;
+        //alufn = ------;
+        //ra = ----;
+        //rb = ----;
+        //rc = ----;
+        
+        if (decrease_timer) {
+          game_fsm.d = game_fsm.SHIFT_COL_0;
+        }
+        // check left_button before right_button to prevent metastable state
+        else if (left_button && ~right_button) {
+          game_fsm.d = game_fsm.CHECK_LEFT_BOUNDARY;
+        }
+        else if (right_button && ~left_button) {
+          game_fsm.d = game_fsm.CHECK_RIGHT_BOUNDARY;
+        }
+      
+      
+      game_fsm.CHECK_LEFT_BOUNDARY:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0100;
+        alufn = 110011; 	// CMPEQ
+        ra = 1000; 	// 0x8: Player position
+        // rb = 0000; 	// 0x0: Column 0
+        rc = 1010;	// 0xA: check player movement
+        
+        game_fsm.d = game_fsm.BRANCH_LEFT;
+      
+      game_fsm.BRANCH_LEFT:
+        rb = 1010;
+        if (regfile_b[0] == 0) {
+          game_fsm.d = game_fsm.SHIFT_PLAYER_LEFT;
+        }
+        else if (regfile_b[0] == 1) {
+          game_fsm.d = game_fsm.IDLE;
+        }
+      
+      
+      game_fsm.SHIFT_PLAYER_LEFT:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100000; 	// SHL
+        ra = 1000; 	// 0x8: Player position
+        //rb = ----;
+        rc = 1000; 	// 0x8: Player position
+        
+        game_fsm.d = game_fsm.IDLE;
+      
+      
+      game_fsm.CHECK_RIGHT_BOUNDARY:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 1001;
+        alufn = 110011; 	// CMPEQ
+        ra = 1000; 	// 0x8: Player position
+        // rb = 0101; 	// 0x0: Column 5
+        rc = 1010;	// 0xA: check player movement
+        
+        game_fsm.d = game_fsm.BRANCH_RIGHT;
+      
+      
+      game_fsm.BRANCH_RIGHT:
+        rb = 1010;
+        if (regfile_b[0] == 0) {
+          game_fsm.d = game_fsm.SHIFT_PLAYER_RIGHT;
+        }
+        else if (regfile_b[0] == 1) {
+          game_fsm.d = game_fsm.IDLE;
+        }
+      
+      
+      game_fsm.SHIFT_PLAYER_RIGHT:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100001; 	// SHR
+        ra = 1000; 	// 0x8: Player position
+        //rb = ----;
+        rc = 1000; 	// 0x8: Player position
+        
+        game_fsm.d = game_fsm.IDLE;
+      
+      
+      game_fsm.SHIFT_COL_0:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001;
+        alufn = 100001; 	// SHR
+        ra = 0000; 	// 0x0: Column 0
+        //rb = ----;
+        rc = 0000;
+        
+        game_fsm.d = game_fsm.SHIFT_COL_1;
+      
+      
+      game_fsm.SHIFT_COL_1:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100001; 	// SHR
+        ra = 0001; 	// 0x1: Column 1
+        //rb = ----;
+        rc = 0001;	// 0x1: Column 1
+        
+        game_fsm.d = game_fsm.SHIFT_COL_2;
+      
+      
+      game_fsm.SHIFT_COL_2:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100001; 	// SHR
+        ra = 0010; 	// 0x1: Column 2
+        //rb = ----;
+        rc = 0010;	// 0x1: Column 2
+        
+        game_fsm.d = game_fsm.SHIFT_COL_3;
+      
+      
+      game_fsm.SHIFT_COL_3:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100001; 	// SHR
+        ra = 0011; 	// 0x1: Column 3
+        //rb = ----;
+        rc = 0011;	// 0x1: Column 3
+        
+        game_fsm.d = game_fsm.SHIFT_COL_4;
+      
+      
+      game_fsm.SHIFT_COL_4:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100001; 	// SHR
+        ra = 0100; 	// 0x1: Column 4
+        //rb = ----;
+        rc = 0100;	// 0x1: Column 4
+        
+        game_fsm.d = game_fsm.SHIFT_COL_5;
+      
+      
+      game_fsm.SHIFT_COL_5:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 100001; 	// SHR
+        ra = 0101; 	// 0x1: Column 5
+        //rb = ----;
+        rc = 0101;	// 0x1: Column 5
+        
+        game_fsm.d = game_fsm.SHIFT_COLS;
+      
+      game_fsm.SHIFT_COLS: // player position + obstacles
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 1010;
+        alufn = 011110; // OR
+        ra = 1000;
+        // rb = 1011;
+        rc = 1011; // regfile stores player + obstacles. all same colour light
+        
+        game_fsm.d = game_fsm.GET_PLAYER_POS;
+        
+        
+        /*game_fsm.GET_PLAYER_POS:
+         we = 1;
+         wdsel = 0;
+         asel = 0000;
+         bsel = 0000;
+         alufn = 011000; 	// AND
+         ra = 1000; 	// 0x8: Player position
+         rb = 0011; 	// 0x0 : 0x5???
+         rc = 1001; 	// 0x9: Position of start line
+         
+         game_fsm.d = game_fsm.CHECK_PLAYER_POS;*/
+      
+      
+      game_fsm.GET_PLAYER_POS: 
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0000;
+        alufn = 110011; 	// AND
+        ra = 1000; 	// player position
+        rb = 1011; 	// obstacles
+        rc = 1100; 	// Temp regfile
+        
+        /*if (regfile_b[12] == 0) {
+           game_fsm.d = game_fsm.CHECK_REMAINING_MAP_LENGTH;
+           }
+           else if (regfile_b[12] == 1) {
+           game_fsm.d = game_fsm.GAME_OVER;
+           }*/
+        
+        game_fsm.d = game_fsm.CHECK_PLAYER_POS;
+      
+      game_fsm.CHECK_PLAYER_POS:
+        rb = 1100;
+        if (regfile_b[0] == 1 || regfile_b[1] == 1 || regfile_b[2] == 1 || regfile_b[3] == 1 || regfile_b[4] == 1 || regfile_b[5] == 1) {
+          game_fsm.d = game_fsm.GAME_OVER;
+        }
+        else {
+          game_fsm.d = game_fsm.CHECK_REMAINING_MAP_LENGTH;
+        }
+      
+      
+      game_fsm.CHECK_REMAINING_MAP_LENGTH:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0010;
+        alufn = 110011; 	// CMPEQ
+        ra = 0101; 	// last column
+        //rb = 1010; 	// 0xA: Check player movement
+        rc = 1101; 	// 0xD: Temp regfile
+        
+        game_fsm.d = game_fsm.BRANCH_MAPLENGTH;
+        
+        /*if (regfile_b[0] == 0) {
+         game_fsm.d = game_fsm.IDLE;
+         }
+         else if (regfile_datain[13] == 1) {
+         game_fsm.d = game_fsm.INCREASE_SCORE;
+         }*/
+      
+      game_fsm.BRANCH_MAPLENGTH:
+        rb = 1101;
+        if (~regfile_b[0]) {
+          game_fsm.d = game_fsm.IDLE;
+        }
+        else {
+          game_fsm.d = game_fsm.INCREASE_SCORE;
+        }
+      
+      
+      game_fsm.INCREASE_SCORE:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0001; 	// 0x1
+        alufn = 000000; 	// ADD
+        ra = 0111; 	// 0x7: Score
+        //rb = ----;
+        rc = 0111; 	// 0x7: Score
+        
+        game_fsm.d = game_fsm.CHECK_SCORE;
+      
+      
+      game_fsm.CHECK_SCORE:
+        we = 1;
+        wdsel = 0;
+        asel = 0000;
+        bsel = 0011;
+        alufn = 110011; 	// CMPEQ
+        ra = 0111; 	// 0x7: Score
+        //rb = ----;
+        rc = 1110; 	// 0xE: Temp regfile
+        
+        game_fsm.d = game_fsm.BRANCH_SCORE;
+        
+        /*if (regfile_b[14] == 0) {
+         game_fsm.d = game_fsm.INITIALISE_GAME_TIMER;
+         }
+         else if (regfile_b[14] == 1) {
+         game_fsm.d = game_fsm.GAME_OVER;
+         }*/
+      
+      game_fsm.BRANCH_SCORE:
+        rb = 1110;
+        if (~regfile_b[0]) {
+          game_fsm.d = game_fsm.INITIALISE_PLAYER_POSITION;
+        }
+        else {
+          game_fsm.d = game_fsm.GAME_OVER;
+        }
+      
+      
+      game_fsm.GAME_OVER:
+        we = 0;
+        wdsel = 0;
+        // asel = 0000;
+        //bsel = --;
+        // alufn = 011010; 	// 'A'
+        // ra = 0111; 	// 0x7: Score
+        //rb = ----;
+        //rc = ----;
+        
+        if (rst_button) {
+          game_fsm.d = game_fsm.SET_SCORE;
+        }
+        else {
+          game_fsm.d = game_fsm.GAME_OVER;
+        }
+      
+      
+    }
+  }
+}

@@ -1,0 +1,42 @@
+module initialise_player_LED (
+    input clk,
+    input player[16],
+    output playerled[6][24],
+    output done
+  ) {
+  
+  .clk(clk) {
+    dff count;
+    dff player_dff[6][24];
+    fsm binarytohex = {BINARYTOHEX, IDLE};
+  }
+
+  always {
+    done = 0;
+    count.d = 0;
+    playerled = player_dff.q;
+    
+    case (binarytohex.q) {
+      binarytohex.BINARYTOHEX:
+     
+        if (count.q == 5) {
+          binarytohex.d = binarytohex.IDLE;
+        }
+        
+        else if (player[count.q]) {
+          player_dff.d[count.q] = hFF0000;
+          count.d = count.q + 1;
+          binarytohex.d = binarytohex.BINARYTOHEX;
+        }
+        
+        else {
+          player_dff.d[count.q] = h000000;
+          count.d = count.q + 1;
+          binarytohex.d = binarytohex.BINARYTOHEX;
+        }
+        
+      binarytohex.IDLE:
+        done = 1;
+    }
+        
+}

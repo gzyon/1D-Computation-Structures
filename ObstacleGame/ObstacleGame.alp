@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GameMap" board="Alchitry Au" language="Lucid" version="3">
+  <files>
+    <src>shifter.luc</src>
+    <component>pipeline.luc</component>
+    <src>multi_seven_seg.luc</src>
+    <component>counter.luc</component>
+    <src>seven_seg.luc</src>
+    <src>game_CU.luc</src>
+    <component>reset_conditioner.luc</component>
+    <src>shiftPlayer.luc</src>
+    <component>button_conditioner.luc</component>
+    <src>ws2812b_writer.luc</src>
+    <src>beta.luc</src>
+    <component>simple_dual_ram.v</component>
+    <src>adder.luc</src>
+    <src>initialise_player_LED.luc</src>
+    <component>decoder.luc</component>
+    <src>initialise_col_LED.luc</src>
+    <src top="true">au_top.luc</src>
+    <src>regfile.luc</src>
+    <component>simple_ram.v</component>
+    <src>compare.luc</src>
+    <src>boolean.luc</src>
+    <src>alu.luc</src>
+    <component>edge_detector.luc</component>
+    <src>mapROM.luc</src>
+    <src>hex_to_decimal.luc</src>
+    <constraint lib="true">alchitry.acf</constraint>
+    <constraint lib="true">au.xdc</constraint>
+    <constraint>custom.acf</constraint>
+  </files>
+</project>
