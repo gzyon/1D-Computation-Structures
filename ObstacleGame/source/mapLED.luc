@@ -1,0 +1,255 @@
+module mapLED (
+    input clk,  // clock
+    input rst,  // reset
+    input col0[16],
+    input col1[16],
+    input col2[16],
+    input col3[16],
+    input col4[16],
+    input col5[16],
+    output led_col0[7][24],
+    output led_col1[7][24],
+    output led_col2[7][24],
+    output led_col3[7][24],
+    output led_col4[7][24],
+    output led_col5[7][24]
+  ) {
+  const B = hFF0000;
+  const BLANK = h000000;
+  
+  sig rst_n;
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    reset_conditioner reset_cond;
+  }
+  
+  always {
+    
+    reset_cond.in = ~rst; // input raw inverted reset signal
+    rst_n = reset_cond.out;   // conditioned reset
+    
+    case(col0[0]){
+      b0:led_col0[0] = BLANK;
+      b1:led_col0[0] = B;
+      default: led_col0[0] = BLANK;
+    }
+    case(col0[1]){
+      b0:led_col0[1] = BLANK;
+      b1:led_col0[1] = B;
+      default: led_col0[1] = BLANK;
+    }
+    case(col0[2]){
+      b0:led_col0[2] = BLANK;
+      b1:led_col0[2] = B;
+      default: led_col0[2] = BLANK;
+    }
+    case(col0[3]){
+      b0:led_col0[3] = BLANK;
+      b1:led_col0[3] = B;
+      default: led_col0[3] = BLANK;
+    }
+    case(col0[4]){
+      b0:led_col0[4] = BLANK;
+      b1:led_col0[4] = B;
+      default: led_col0[4] = BLANK;
+    }
+    case(col0[5]){
+      b0:led_col0[5] = BLANK;
+      b1:led_col0[5] = B;      
+      default: led_col0[5] = BLANK;
+    }
+    
+    case(col0[6]){
+      b0:led_col0[6] = BLANK;
+      b1:led_col0[6] = B;      
+      default: led_col0[5] = BLANK;
+    }
+    
+    case(col1[0]){
+      b0:led_col1[0] = BLANK;
+      b1:led_col1[0] = B;
+      default: led_col1[0] = BLANK;
+    }
+    case(col1[1]){
+      b0:led_col1[1] = BLANK;
+      b1:led_col1[1] = B;
+      default: led_col1[1] = BLANK;
+    }
+    case(col1[2]){
+      b0:led_col1[2] = BLANK;
+      b1:led_col1[2] = B;
+      default: led_col1[2] = BLANK;
+    }
+    case(col1[3]){
+      b0:led_col1[3] = BLANK;
+      b1:led_col1[3] = B;
+      default: led_col1[3] = BLANK;
+    }
+    case(col1[4]){
+      b0:led_col1[4] = BLANK;
+      b1:led_col1[4] = B;
+      default: led_col1[4] = BLANK;
+    }
+    case(col1[5]){
+      b0:led_col1[5] = BLANK;
+      b1:led_col1[5] = B;      
+      default: led_col1[5] = BLANK;
+    }
+    
+    case(col1[6]){
+      b0:led_col1[6] = BLANK;
+      b1:led_col1[6] = B;      
+      default: led_col1[5] = BLANK;
+    }
+    
+    case(col2[0]){
+      b0:led_col2[0] = BLANK;
+      b1:led_col2[0] = B;
+      default: led_col2[0] = BLANK;
+    }
+    case(col2[1]){
+      b0:led_col2[1] = BLANK;
+      b1:led_col2[1] = B;
+      default: led_col2[1] = BLANK;
+    }
+    case(col2[2]){
+      b0:led_col2[2] = BLANK;
+      b1:led_col2[2] = B;
+      default: led_col2[2] = BLANK;
+    }
+    case(col2[3]){
+      b0:led_col2[3] = BLANK;
+      b1:led_col2[3] = B;
+      default: led_col2[3] = BLANK;
+    }
+    case(col2[4]){
+      b0:led_col2[4] = BLANK;
+      b1:led_col2[4] = B;
+      default: led_col2[4] = BLANK;
+    }
+    case(col2[5]){
+      b0:led_col2[5] = BLANK;
+      b1:led_col2[5] = B;      
+      default: led_col2[5] = BLANK;
+    }
+    
+    case(col2[6]){
+      b0:led_col2[6] = BLANK;
+      b1:led_col2[6] = B;      
+      default: led_col2[5] = BLANK;
+    }
+    
+    case(col3[0]){
+      b0:led_col3[0] = BLANK;
+      b1:led_col3[0] = B;
+      default: led_col3[0] = BLANK;
+    }
+    case(col3[1]){
+      b0:led_col3[1] = BLANK;
+      b1:led_col3[1] = B;
+      default: led_col3[1] = BLANK;
+    }
+    case(col3[2]){
+      b0:led_col3[2] = BLANK;
+      b1:led_col3[2] = B;
+      default: led_col3[2] = BLANK;
+    }
+    case(col3[3]){
+      b0:led_col3[3] = BLANK;
+      b1:led_col3[3] = B;
+      default: led_col3[3] = BLANK;
+    }
+    case(col3[4]){
+      b0:led_col3[4] = BLANK;
+      b1:led_col3[4] = B;
+      default: led_col3[4] = BLANK;
+    }
+    case(col3[5]){
+      b0:led_col3[5] = BLANK;
+      b1:led_col3[5] = B;      
+      default: led_col3[5] = BLANK;
+    }
+    
+    case(col3[6]){
+      b0:led_col3[6] = BLANK;
+      b1:led_col3[6] = B;      
+      default: led_col3[5] = BLANK;
+    }
+    
+    case(col4[0]){
+      b0:led_col4[0] = BLANK;
+      b1:led_col4[0] = B;
+      default: led_col4[0] = BLANK;
+    }
+    case(col4[1]){
+      b0:led_col4[1] = BLANK;
+      b1:led_col4[1] = B;
+      default: led_col4[1] = BLANK;
+    }
+    case(col4[2]){
+      b0:led_col4[2] = BLANK;
+      b1:led_col4[2] = B;
+      default: led_col4[2] = BLANK;
+    }
+    case(col4[3]){
+      b0:led_col4[3] = BLANK;
+      b1:led_col4[3] = B;
+      default: led_col4[3] = BLANK;
+    }
+    case(col4[4]){
+      b0:led_col4[4] = BLANK;
+      b1:led_col4[4] = B;
+      default: led_col4[4] = BLANK;
+    }
+    case(col4[5]){
+      b0:led_col4[5] = BLANK;
+      b1:led_col4[5] = B;      
+      default: led_col4[5] = BLANK;
+    }
+    
+    case(col4[6]){
+      b0:led_col4[6] = BLANK;
+      b1:led_col4[6] = B;      
+      default: led_col4[5] = BLANK;
+    }
+    
+    case(col5[0]){
+      b0:led_col5[0] = BLANK;
+      b1:led_col5[0] = B;
+      default: led_col5[0] = BLANK;
+    }
+    case(col5[1]){
+      b0:led_col5[1] = BLANK;
+      b1:led_col5[1] = B;
+      default: led_col5[1] = BLANK;
+    }
+    case(col5[2]){
+      b0:led_col5[2] = BLANK;
+      b1:led_col5[2] = B;
+      default: led_col5[2] = BLANK;
+    }
+    case(col5[3]){
+      b0:led_col5[3] = BLANK;
+      b1:led_col5[3] = B;
+      default: led_col5[3] = BLANK;
+    }
+    case(col5[4]){
+      b0:led_col5[4] = BLANK;
+      b1:led_col5[4] = B;
+      default: led_col5[4] = BLANK;
+    }
+    case(col5[5]){
+      b0:led_col5[5] = BLANK;
+      b1:led_col5[5] = B;      
+      default: led_col5[5] = BLANK;
+    }
+    
+    case(col5[6]){
+      b0:led_col5[6] = BLANK;
+      b1:led_col5[6] = B;      
+      default: led_col5[5] = BLANK;
+    }
+  }
+}

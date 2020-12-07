@@ -22,7 +22,6 @@ module au_top_0 (
     output reg playerled,
     output reg [7:0] score_seg,
     output reg [1:0] score_sel,
-    output reg [23:0] io_led,
     output reg usb_tx
   );
   
@@ -93,44 +92,6 @@ module au_top_0 (
     .in(M_condStart_in),
     .out(M_condStart_out)
   );
-  wire [168-1:0] M_columns_col0_led;
-  wire [168-1:0] M_columns_col1_led;
-  wire [168-1:0] M_columns_col2_led;
-  wire [168-1:0] M_columns_col3_led;
-  wire [168-1:0] M_columns_col4_led;
-  wire [168-1:0] M_columns_col5_led;
-  wire [1-1:0] M_columns_done;
-  reg [16-1:0] M_columns_col0;
-  reg [16-1:0] M_columns_col1;
-  reg [16-1:0] M_columns_col2;
-  reg [16-1:0] M_columns_col3;
-  reg [16-1:0] M_columns_col4;
-  reg [16-1:0] M_columns_col5;
-  initialise_col_LED_4 columns (
-    .clk(clk),
-    .col0(M_columns_col0),
-    .col1(M_columns_col1),
-    .col2(M_columns_col2),
-    .col3(M_columns_col3),
-    .col4(M_columns_col4),
-    .col5(M_columns_col5),
-    .col0_led(M_columns_col0_led),
-    .col1_led(M_columns_col1_led),
-    .col2_led(M_columns_col2_led),
-    .col3_led(M_columns_col3_led),
-    .col4_led(M_columns_col4_led),
-    .col5_led(M_columns_col5_led),
-    .done(M_columns_done)
-  );
-  wire [144-1:0] M_playerpos_playerled;
-  wire [1-1:0] M_playerpos_done;
-  reg [16-1:0] M_playerpos_player;
-  initialise_player_LED_5 playerpos (
-    .clk(clk),
-    .player(M_playerpos_player),
-    .playerled(M_playerpos_playerled),
-    .done(M_playerpos_done)
-  );
   wire [8-1:0] M_gameCPU_score;
   wire [16-1:0] M_gameCPU_map0_led;
   wire [16-1:0] M_gameCPU_map1_led;
@@ -139,13 +100,11 @@ module au_top_0 (
   wire [16-1:0] M_gameCPU_map4_led;
   wire [16-1:0] M_gameCPU_map5_led;
   wire [16-1:0] M_gameCPU_player_led;
-  wire [6-1:0] M_gameCPU_playerpos;
-  wire [16-1:0] M_gameCPU_boundarycheck;
   reg [1-1:0] M_gameCPU_left_button;
   reg [1-1:0] M_gameCPU_right_button;
   reg [1-1:0] M_gameCPU_reset;
   reg [1-1:0] M_gameCPU_start;
-  beta_6 gameCPU (
+  beta_4 gameCPU (
     .clk(clk),
     .rst(rst),
     .left_button(M_gameCPU_left_button),
@@ -159,19 +118,53 @@ module au_top_0 (
     .map3_led(M_gameCPU_map3_led),
     .map4_led(M_gameCPU_map4_led),
     .map5_led(M_gameCPU_map5_led),
-    .player_led(M_gameCPU_player_led),
-    .playerpos(M_gameCPU_playerpos),
-    .boundarycheck(M_gameCPU_boundarycheck)
+    .player_led(M_gameCPU_player_led)
   );
   wire [7-1:0] M_score_seg;
   wire [2-1:0] M_score_sel;
   reg [8-1:0] M_score_values;
-  multi_seven_seg_7 score (
+  multi_seven_seg_5 score (
     .clk(clk),
     .rst(rst),
     .values(M_score_values),
     .seg(M_score_seg),
     .sel(M_score_sel)
+  );
+  wire [168-1:0] M_columns_led_col0;
+  wire [168-1:0] M_columns_led_col1;
+  wire [168-1:0] M_columns_led_col2;
+  wire [168-1:0] M_columns_led_col3;
+  wire [168-1:0] M_columns_led_col4;
+  wire [168-1:0] M_columns_led_col5;
+  reg [16-1:0] M_columns_col0;
+  reg [16-1:0] M_columns_col1;
+  reg [16-1:0] M_columns_col2;
+  reg [16-1:0] M_columns_col3;
+  reg [16-1:0] M_columns_col4;
+  reg [16-1:0] M_columns_col5;
+  mapLED_6 columns (
+    .clk(clk),
+    .rst(rst),
+    .col0(M_columns_col0),
+    .col1(M_columns_col1),
+    .col2(M_columns_col2),
+    .col3(M_columns_col3),
+    .col4(M_columns_col4),
+    .col5(M_columns_col5),
+    .led_col0(M_columns_led_col0),
+    .led_col1(M_columns_led_col1),
+    .led_col2(M_columns_led_col2),
+    .led_col3(M_columns_led_col3),
+    .led_col4(M_columns_led_col4),
+    .led_col5(M_columns_led_col5)
+  );
+  wire [144-1:0] M_playerpos_led_sequence;
+  reg [16-1:0] M_playerpos_sequence;
+  playerLED_7 playerpos (
+    .clk(clk),
+    .rst(rst),
+    .sequence(M_playerpos_sequence),
+    .led_sequence(M_playerpos_led_sequence)
   );
   wire [3-1:0] M_col_0_led_pixel;
   wire [1-1:0] M_col_0_led_led;
@@ -275,8 +268,6 @@ module au_top_0 (
     M_gameCPU_right_button = M_detectRight_out;
     M_gameCPU_reset = M_detectReset_out;
     M_gameCPU_start = M_detectStart_out;
-    io_led[0+0+5-:6] = M_gameCPU_playerpos;
-    io_led[8+0+0-:1] = M_gameCPU_boundarycheck[0+0-:1];
     M_player_led_update = 1'h1;
     M_col_0_led_update = 1'h1;
     M_col_1_led_update = 1'h1;
@@ -290,14 +281,14 @@ module au_top_0 (
     M_columns_col3 = M_gameCPU_map3_led;
     M_columns_col4 = M_gameCPU_map4_led;
     M_columns_col5 = M_gameCPU_map5_led;
-    M_playerpos_player = M_gameCPU_player_led;
-    M_col_0_led_color = M_columns_col0_led[(M_col_0_led_pixel)*24+23-:24];
-    M_col_1_led_color = M_columns_col1_led[(M_col_1_led_pixel)*24+23-:24];
-    M_col_2_led_color = M_columns_col2_led[(M_col_2_led_pixel)*24+23-:24];
-    M_col_3_led_color = M_columns_col3_led[(M_col_3_led_pixel)*24+23-:24];
-    M_col_4_led_color = M_columns_col4_led[(M_col_4_led_pixel)*24+23-:24];
-    M_col_5_led_color = M_columns_col5_led[(M_col_5_led_pixel)*24+23-:24];
-    M_player_led_color = M_playerpos_playerled[(M_player_led_pixel)*24+23-:24];
+    M_playerpos_sequence = M_gameCPU_player_led;
+    M_col_0_led_color = M_columns_led_col0[(M_col_0_led_pixel)*24+23-:24];
+    M_col_1_led_color = M_columns_led_col1[(M_col_1_led_pixel)*24+23-:24];
+    M_col_2_led_color = M_columns_led_col2[(M_col_2_led_pixel)*24+23-:24];
+    M_col_3_led_color = M_columns_led_col3[(M_col_3_led_pixel)*24+23-:24];
+    M_col_4_led_color = M_columns_led_col4[(M_col_4_led_pixel)*24+23-:24];
+    M_col_5_led_color = M_columns_led_col5[(M_col_5_led_pixel)*24+23-:24];
+    M_player_led_color = M_playerpos_led_sequence[(M_player_led_pixel)*24+23-:24];
     map_led0 = M_col_0_led_led;
     map_led1 = M_col_1_led_led;
     map_led2 = M_col_2_led_led;

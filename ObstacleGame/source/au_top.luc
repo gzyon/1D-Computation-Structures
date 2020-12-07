@@ -16,7 +16,7 @@ module au_top (
     output playerled,
     output score_seg[8],
     output score_sel[2],
-    output io_led[3][8],
+    //output io_led[3][8],
     output usb_tx          // USB->Serial output
   ) {
   
@@ -38,12 +38,13 @@ module au_top (
     button_conditioner condStart;
     
     
-    initialise_col_LED columns;
-    initialise_player_LED playerpos;
+    
     
     .rst(rst) { 
       beta gameCPU;
       multi_seven_seg score;
+      mapLED columns;
+      playerLED playerpos;
       
       ws2812b_writer col_0_led(#PIXEL_COUNT(7));
       ws2812b_writer col_1_led(#PIXEL_COUNT(7));
@@ -82,8 +83,8 @@ module au_top (
    // debugging 
     
     //debug_led = gameCPU.led;
-    io_led[0][5:0] = gameCPU.playerpos;
-    io_led[1][0] = gameCPU.boundarycheck[0];
+    //io_led[0][5:0] = gameCPU.playerpos;
+    //io_led[1][0] = gameCPU.boundarycheck[0];
     
     player_led.update = 1;
     col_0_led.update = 1;
@@ -99,15 +100,15 @@ module au_top (
     columns.col3 = gameCPU.map3_led;
     columns.col4 = gameCPU.map4_led;
     columns.col5 = gameCPU.map5_led;
-    playerpos.player = gameCPU.player_led;
+    playerpos.sequence = gameCPU.player_led;
     
-    col_0_led.color = columns.col0_led[col_0_led.pixel];
-    col_1_led.color = columns.col1_led[col_1_led.pixel];
-    col_2_led.color = columns.col2_led[col_2_led.pixel];
-    col_3_led.color = columns.col3_led[col_3_led.pixel];
-    col_4_led.color = columns.col4_led[col_4_led.pixel];
-    col_5_led.color = columns.col5_led[col_5_led.pixel];
-    player_led.color = playerpos.playerled[player_led.pixel];
+    col_0_led.color = columns.led_col0[col_0_led.pixel];
+    col_1_led.color = columns.led_col1[col_1_led.pixel];
+    col_2_led.color = columns.led_col2[col_2_led.pixel];
+    col_3_led.color = columns.led_col3[col_3_led.pixel];
+    col_4_led.color = columns.led_col4[col_4_led.pixel];
+    col_5_led.color = columns.led_col5[col_5_led.pixel];
+    player_led.color = playerpos.led_sequence[player_led.pixel];
     
     map_led0 = col_0_led.led;
     map_led1 = col_1_led.led;

@@ -13,28 +13,26 @@ module beta (
     output map3_led[16],
     output map4_led[16],
     output map5_led[16],
-    output player_led[16],
+    output player_led[16]
     
     
     // debugging
-    output playerpos[6],
-    output boundarycheck[16]
+    //output playerpos[6],
+    //output boundarycheck[16]
   ) {
   
   sig inputA[16];
   sig inputB[16];
   
   alu game_alu;
-  mapROM map;
   
   .clk(clk) {
     edge_detector game_timer_detector(#RISE(1), #FALL(0));
-    dff selectmap[3];
+    game_CU game_controlunit;
     
     .rst(rst) {
-      regfile game_regfile;
+      //regfile game_regfile;
       counter slow_timer(#SIZE(1), #DIV(26));
-      game_CU game_controlunit;
       
     }
   }
@@ -55,76 +53,47 @@ module beta (
     
     // outputs to 7 segment
     
-    score = {game_regfile.out_score[3:0], 4h0}; // {game_regfile.out_score[3:0], 4h0};
+    //score = {game_regfile.out_score[3:0], 4h0}; // {game_regfile.out_score[3:0], 4h0};
     
     // LED inputs
     
-    map0_led = game_regfile.map0;
-    map1_led = game_regfile.map1;
-    map2_led = game_regfile.map2;
-    map3_led = game_regfile.map3;
-    map4_led = game_regfile.map4;
-    map5_led = game_regfile.map5;
-    player_led = game_regfile.player;
+    map0_led = game_controlunit.lane1;
+    map1_led = game_controlunit.lane2;
+    map2_led = game_controlunit.lane3;
+    map3_led = game_controlunit.lane4;
+    map4_led = game_controlunit.lane5;
+    map5_led = game_controlunit.lane6;
+    player_led = game_controlunit.player_position;
+    score = {4h0, game_controlunit.score[3:0]};
     
     // regfile
     
-    game_regfile.we = game_controlunit.we;
+    /*game_regfile.we = game_controlunit.we;
     game_regfile.write_address= game_controlunit.rc;
     
     game_regfile.read_address_a = game_controlunit.ra;
-    game_regfile.read_address_b = game_controlunit.rb;
+    game_regfile.read_address_b = game_controlunit.rb;       
     
-    // ROM selector bits
-    map.select = selectmap.q;
-    
-    // conditions for selectmap
-    if (game_regfile.out_score == 0) {
-      selectmap.d = 000;
-    }
-    
-    else if (game_regfile.out_score == 1) {
-      selectmap.d = 001;
-    }
-    
-    else if (game_regfile.out_score == 2) {
-      selectmap.d = 010;
-    }
-    
-    else if (game_regfile.out_score == 3) {
-      selectmap.d = 011;
-    }
-    
-    else if (game_regfile.out_score == 4) {
-      selectmap.d = 100;
-    }
-    
-    game_controlunit.regfile_b = game_regfile.read_data_b;
+    game_controlunit.regfile_b = game_regfile.read_data_b;*/
     
     // debugging
-    playerpos = game_regfile.playerpos[5:0];
-    boundarycheck = game_regfile.checkboundary;
+    //playerpos = game_regfile.playerpos[5:0];
+    //boundarycheck = game_regfile.checkboundary;
     
     // asel
     
-    case (game_controlunit.asel) {
-      b0000 : inputA = game_regfile.read_data_a;
-      b0001 : inputA = 16b1;
-      b0010 : inputA = 16b0;
-      b0011 : inputA = 16h1E;
-      b0100 : inputA = map.out[0];
-      b0101 : inputA = map.out[1];
-      b0110 : inputA = map.out[2];
-      b0111 : inputA = map.out[3];
-      b1000 : inputA = map.out[4];
-      b1001 : inputA = map.out[5];
+    /*case (game_controlunit.asel) {
+      b00 : inputA = game_regfile.read_data_a;
+      b01 : inputA = 16b1;
+      b10 : inputA = 16b0;
+      b11 : inputA = 16h1E;
       default : inputA = 0;
-    }
+    }*/
     
     //bsel
     
     case (game_controlunit.bsel) {
-      b0000 : inputB = game_regfile.read_data_b;
+      //b0000 : inputB = game_regfile.read_data_b;
       b0001 : inputB = 16b1;
       b0010 : inputB = 16b0;
       b0011 : inputB = 16h5;
@@ -134,24 +103,24 @@ module beta (
       b0111 : inputB = 16h0040;
       b1000 : inputB = 16h0020;
       b1001 : inputB = 16h0001;
-      b1010 : inputB = c{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, map.out[0][0], map.out[1][0], map.out[2][0], map.out[3][0], map.out[4][0], map.out[5][0]};
       
       default : inputB = 0;
     }
     
     // ALU
     
-    game_alu.a = inputA;
+    game_alu.a = game_controlunit.alu_a;
     game_alu.b = inputB;
     game_alu.alufn = game_controlunit.alufn;
+    game_controlunit.alufn_out = game_alu.out;
     
     // wdsel mux
     
-    case (game_controlunit.wdsel) {
+    /*case (game_controlunit.wdsel) {
       b1 : game_regfile.write_data = 0;
       default : // b0
         game_regfile.write_data = game_alu.out;
-    }
+    }*/
     
   }
 }

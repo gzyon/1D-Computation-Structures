@@ -6,9 +6,9 @@
 
 /*
    Parameters:
-     SIZE = 1
-     DIV = 26
-     TOP = 0
+     SIZE = DIGIT_BITS
+     DIV = DIV
+     TOP = DIGITS-1
      UP = 1
 */
 module counter_13 (
@@ -18,28 +18,28 @@ module counter_13 (
   );
   
   localparam SIZE = 1'h1;
-  localparam DIV = 5'h1a;
-  localparam TOP = 1'h0;
+  localparam DIV = 5'h10;
+  localparam TOP = 3'h1;
   localparam UP = 1'h1;
   
   
-  reg [26:0] M_ctr_d, M_ctr_q = 1'h0;
+  reg [16:0] M_ctr_d, M_ctr_q = 1'h0;
   
-  localparam MAX_VALUE = 27'h3ffffff;
+  localparam MAX_VALUE = 19'h1ffff;
   
   always @* begin
     M_ctr_d = M_ctr_q;
     
-    value = M_ctr_q[26+0-:1];
+    value = M_ctr_q[16+0-:1];
     if (1'h1) begin
       M_ctr_d = M_ctr_q + 1'h1;
-      if (1'h0 && M_ctr_q == 27'h3ffffff) begin
+      if (1'h1 && M_ctr_q == 19'h1ffff) begin
         M_ctr_d = 1'h0;
       end
     end else begin
       M_ctr_d = M_ctr_q - 1'h1;
-      if (1'h0 && M_ctr_q == 1'h0) begin
-        M_ctr_d = 27'h3ffffff;
+      if (1'h1 && M_ctr_q == 1'h0) begin
+        M_ctr_d = 19'h1ffff;
       end
     end
   end

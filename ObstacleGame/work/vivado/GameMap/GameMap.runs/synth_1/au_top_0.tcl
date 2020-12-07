@@ -84,26 +84,25 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/adder_18.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/adder_16.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/alu_10.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/beta_6.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/boolean_19.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/beta_4.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/boolean_17.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/button_conditioner_3.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/compare_21.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/compare_19.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/counter_12.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/counter_13.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/counter_15.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/decoder_17.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/decoder_15.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/edge_detector_2.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/game_CU_14.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/initialise_col_LED_4.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/initialise_player_LED_5.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/mapROM_11.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/multi_seven_seg_7.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/game_CU_11.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/mapLED_6.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/mapROM_20.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/multi_seven_seg_5.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/pipeline_9.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/regfile_12.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/playerLED_7.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/reset_conditioner_1.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/seven_seg_16.v
-  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/shifter_20.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/seven_seg_14.v
+  C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/shifter_18.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/ws2812b_writer_8.v
   C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.srcs/sources_1/imports/verilog/au_top_0.v
 }
