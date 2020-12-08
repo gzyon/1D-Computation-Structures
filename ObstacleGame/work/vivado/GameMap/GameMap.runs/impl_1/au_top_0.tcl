@@ -17,7 +17,7 @@ proc create_report { reportName command } {
   }
 }
 namespace eval ::optrace {
-  variable script "C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.runs/impl_1/au_top_0.tcl"
+  variable script "C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/vivado/GameMap/GameMap.runs/impl_1/au_top_0.tcl"
   variable category "vivado_impl"
 }
 
@@ -128,17 +128,17 @@ OPTRACE "create in-memory project" START { }
   set_param project.singleFileAddWarning.threshold 0
 OPTRACE "create in-memory project" END { }
 OPTRACE "set parameters" START { }
-  set_property webtalk.parent_dir C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.cache/wt [current_project]
-  set_property parent.project_path C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.xpr [current_project]
-  set_property ip_output_repo C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.cache/ip [current_project]
+  set_property webtalk.parent_dir C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/vivado/GameMap/GameMap.cache/wt [current_project]
+  set_property parent.project_path C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/vivado/GameMap/GameMap.xpr [current_project]
+  set_property ip_output_repo C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/vivado/GameMap/GameMap.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
-  add_files -quiet C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.runs/synth_1/au_top_0.dcp
+  add_files -quiet C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/vivado/GameMap/GameMap.runs/synth_1/au_top_0.dcp
 OPTRACE "read constraints: implementation" START { }
-  read_xdc C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/constraint/alchitry.xdc
+  read_xdc C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/constraint/alchitry.xdc
+  read_xdc C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/constraint/custom.xdc
   read_xdc {{C:/Program Files/Alchitry/Alchitry Labs/library/components/au.xdc}}
-  read_xdc C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/constraint/custom.xdc
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "add files" END { }
 OPTRACE "link_design" START { }

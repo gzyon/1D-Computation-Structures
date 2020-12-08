@@ -22,6 +22,8 @@ module au_top_0 (
     output reg playerled,
     output reg [7:0] score_seg,
     output reg [1:0] score_sel,
+    output reg [23:0] io_led,
+    output reg leds,
     output reg usb_tx
   );
   
@@ -100,6 +102,8 @@ module au_top_0 (
   wire [16-1:0] M_gameCPU_map4_led;
   wire [16-1:0] M_gameCPU_map5_led;
   wire [16-1:0] M_gameCPU_player_led;
+  wire [6-1:0] M_gameCPU_playerpos;
+  wire [16-1:0] M_gameCPU_boundarycheck;
   reg [1-1:0] M_gameCPU_left_button;
   reg [1-1:0] M_gameCPU_right_button;
   reg [1-1:0] M_gameCPU_reset;
@@ -118,7 +122,9 @@ module au_top_0 (
     .map3_led(M_gameCPU_map3_led),
     .map4_led(M_gameCPU_map4_led),
     .map5_led(M_gameCPU_map5_led),
-    .player_led(M_gameCPU_player_led)
+    .player_led(M_gameCPU_player_led),
+    .playerpos(M_gameCPU_playerpos),
+    .boundarycheck(M_gameCPU_boundarycheck)
   );
   wire [7-1:0] M_score_seg;
   wire [2-1:0] M_score_sel;
@@ -142,7 +148,7 @@ module au_top_0 (
   reg [16-1:0] M_columns_col3;
   reg [16-1:0] M_columns_col4;
   reg [16-1:0] M_columns_col5;
-  mapLED_6 columns (
+  initialise_col_LED_6 columns (
     .clk(clk),
     .rst(rst),
     .col0(M_columns_col0),
@@ -160,7 +166,7 @@ module au_top_0 (
   );
   wire [144-1:0] M_playerpos_led_sequence;
   reg [16-1:0] M_playerpos_sequence;
-  playerLED_7 playerpos (
+  initialise_player_LED_7 playerpos (
     .clk(clk),
     .rst(rst),
     .sequence(M_playerpos_sequence),
@@ -242,7 +248,7 @@ module au_top_0 (
   wire [1-1:0] M_player_led_led;
   reg [1-1:0] M_player_led_update;
   reg [24-1:0] M_player_led_color;
-  ws2812b_writer_8 player_led (
+  ws2812b_writer_9 player_led (
     .clk(clk),
     .rst(rst),
     .update(M_player_led_update),
@@ -268,6 +274,8 @@ module au_top_0 (
     M_gameCPU_right_button = M_detectRight_out;
     M_gameCPU_reset = M_detectReset_out;
     M_gameCPU_start = M_detectStart_out;
+    leds = M_gameCPU_playerpos[5+0-:1];
+    io_led[8+0+0-:1] = M_gameCPU_boundarycheck[0+0-:1];
     M_player_led_update = 1'h1;
     M_col_0_led_update = 1'h1;
     M_col_1_led_update = 1'h1;

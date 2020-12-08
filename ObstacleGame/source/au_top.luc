@@ -16,7 +16,8 @@ module au_top (
     output playerled,
     output score_seg[8],
     output score_sel[2],
-    //output io_led[3][8],
+    output io_led[3][8],
+    output leds,
     output usb_tx          // USB->Serial output
   ) {
   
@@ -37,14 +38,12 @@ module au_top (
     button_conditioner condReset;
     button_conditioner condStart;
     
-    
-    
-    
     .rst(rst) { 
       beta gameCPU;
       multi_seven_seg score;
-      mapLED columns;
-      playerLED playerpos;
+      initialise_col_LED columns;
+      initialise_player_LED playerpos;
+      //shiftPlayer moveLED;
       
       ws2812b_writer col_0_led(#PIXEL_COUNT(7));
       ws2812b_writer col_1_led(#PIXEL_COUNT(7));
@@ -52,7 +51,7 @@ module au_top (
       ws2812b_writer col_3_led(#PIXEL_COUNT(7));
       ws2812b_writer col_4_led(#PIXEL_COUNT(7));
       ws2812b_writer col_5_led(#PIXEL_COUNT(7));
-      ws2812b_writer player_led(#PIXEL_COUNT(7));
+      ws2812b_writer player_led(#PIXEL_COUNT(6));
     }
   }
   
@@ -80,11 +79,16 @@ module au_top (
     gameCPU.reset = detectReset.out;
     gameCPU.start = detectStart.out;
     
+    //moveLED.left_button = detectLeft.out;
+    //moveLED.right_button = detectRight.out;
+    
+    //playerled = moveLED.outled;
+    
    // debugging 
     
     //debug_led = gameCPU.led;
-    //io_led[0][5:0] = gameCPU.playerpos;
-    //io_led[1][0] = gameCPU.boundarycheck[0];
+    leds = gameCPU.playerpos[5];
+    io_led[1][0] = gameCPU.boundarycheck[0];
     
     player_led.update = 1;
     col_0_led.update = 1;

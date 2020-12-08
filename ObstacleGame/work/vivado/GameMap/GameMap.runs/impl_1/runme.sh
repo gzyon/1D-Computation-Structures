@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Users/zhiyi/Documents/alchitry/ObstacleGame/work/vivado/GameMap/GameMap.runs/impl_1'
+HD_PWD='C:/Users/zhiyi/Desktop/1D-Computation-Structures-main/1D-Computation-Structures-main/ObstacleGame/work/vivado/GameMap/GameMap.runs/impl_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
