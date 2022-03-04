@@ -1,0 +1,36 @@
+module store_value (
+    input btna,
+    input btnb,
+    input rst,
+    input clk, //clock
+    input switch[16],
+    output getA[16],
+    output getB[16]
+  ) {
+  
+  edge_detector detectA(#RISE(1), #FALL(0),.clk(clk)); //detect on rising edge only
+  edge_detector detectB(#RISE(1), #FALL(0), .clk(clk));
+  
+  button_conditioner conda(.clk(clk), .in(btna)); //check if button pressed
+  button_conditioner condb(.clk(clk), .in(btnb));
+  
+  dff a[16](#INIT(0), .clk(clk), .rst(rst)); //store A and B inputs
+  dff b[16](#INIT(0), .clk(clk), .rst(rst));
+
+  always {
+  
+    detectA.in = conda.out; // conditions for when buttons are pressed
+    detectB.in = condb.out; 
+    
+    if (detectA.out) { //button[0] pressed
+      a.d = switch;
+    }
+    
+    if (detectB.out)  { //button[1] pressed
+      b.d = switch;
+    }
+    
+    getA = a.q; //output a
+    getB = b.q; //output b
+  }
+}

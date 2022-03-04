@@ -1,0 +1,28 @@
+module multi_seven_seg #(
+    DIGITS = 4 : DIGITS > 0, 
+    DIV = 16 : DIV > 0
+)(
+    input clk,  // clock
+    input rst,  // reset
+    input values [DIGITS][4], // values to show
+    output seg [7],
+    output sel [DIGITS]
+  ) {
+  
+  const DIGIT_BITS = $clog2(DIGITS);
+  
+  .clk(clk), .rst(rst) {
+    counter ctr (#DIV(DIV), #SIZE(DIGIT_BITS), #TOP(DIGITS-1));
+  }
+  
+  seven_seg seg_dec; // segment decoder 
+  decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder 
+
+  always {
+    seg_dec.char = values[ctr.value];
+    seg = seg_dec.seg;
+    
+    digit_dec.in = ctr.value;
+    sel = digit_dec.out;
+  }
+}

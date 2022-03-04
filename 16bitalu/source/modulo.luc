@@ -1,0 +1,18 @@
+module modulo (
+    input a[16],
+    input b[16],
+    output out[16]
+  ) {
+  
+  always {
+    
+    if (a < b) {
+      out = a;
+    }
+    
+    else {
+      out = a - (a / b) * b;
+    }
+     
+  }
+}

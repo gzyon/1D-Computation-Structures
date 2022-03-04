@@ -1,0 +1,54 @@
+module playerLED (
+    input clk,  // clock
+    input rst,  // reset
+    input sequence[16],
+    output led_sequence[6][24]
+  ) {
+  const B = hFF0000;
+  const BLANK = h000000;
+  
+  sig rst_n;
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    reset_conditioner reset_cond;
+  }
+  
+  always {
+    
+    reset_cond.in = ~rst; // input raw inverted reset signal
+    rst_n = reset_cond.out;   // conditioned reset
+    
+    case(sequence[0]){
+      b0:led_sequence[0] = BLANK;
+      b1:led_sequence[0] = B;
+      default: led_sequence[0] = BLANK;
+    }
+    case(sequence[1]){
+      b0:led_sequence[1] = BLANK;
+      b1:led_sequence[1] = B;
+      default: led_sequence[1] = BLANK;
+    }
+    case(sequence[2]){
+      b0:led_sequence[2] = BLANK;
+      b1:led_sequence[2] = B;
+      default: led_sequence[2] = BLANK;
+    }
+    case(sequence[3]){
+      b0:led_sequence[3] = BLANK;
+      b1:led_sequence[3] = B;
+      default: led_sequence[3] = BLANK;
+    }
+    case(sequence[4]){
+      b0:led_sequence[4] = BLANK;
+      b1:led_sequence[4] = B;
+      default: led_sequence[4] = BLANK;
+    }
+    case(sequence[5]){
+      b0:led_sequence[5] = BLANK;
+      b1:led_sequence[5] = B;      
+      default: led_sequence[5] = BLANK;
+    }
+  }
+}
