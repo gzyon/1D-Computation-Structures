@@ -1,0 +1,68 @@
+@import '~antd/dist/antd.css';
+
+.App {
+  background-color: #282c34;
+  min-height:100vh;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App .ant-card {
+  width: 100%;
+  max-width: 850px;
+  margin-bottom: 20px;
+}
+
+.ant-form-inline .ant-form-item {
+  margin-bottom: 20px;
+}
+
+p {
+  /* Center horizontally*/
+  text-align: center;
+}
+
+#container {
+  min-height: 100vh;
+  display: table;
+}
+
+.ant-tabs-tab {
+  color: white !important;
+}
+
+.ant-tabs-tab-active {
+  color: blue !important;
+}
+
+.ant-collapse-header-high > .ant-collapse-header {
+  background: lightcoral;
+}
+
+.ant-collapse-header-normal > .ant-collapse-header {
+  background: lightgreen;
+}
+
+.ant-collapse-header-low > .ant-collapse-header {
+  background: lightskyblue;
+}
+
+.ant-collapse-header-warning > .ant-collapse-header {
+  background: lightsalmon;
+}
+
+.ant-collapse-header {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* img {
+  max-height: 50%;
+  max-width: 50%;
+  object-fit: cover;
+} */
